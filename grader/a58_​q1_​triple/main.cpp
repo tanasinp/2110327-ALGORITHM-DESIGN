@@ -15,17 +15,21 @@ int main(){
         int target;
         cin >> target;
         bool found = false;
-        for(auto it = v.begin() ; it != v.end() ; it++){
-            a = *it;
-            for(auto it2 = it+1 ; it2 != v.end() ; it2++){
-                b = *it2;
-                auto it3 = find(it2+1, v.end(),target-a-b);
-                if(it3 != v.end()){
+        int sum;
+        for(int i = 0 ; i < n ; i++){
+            int j = i+1;
+            int k = n-1;
+            while(j < k){
+                int sum = v[i] + v[j] + v[k];
+                if (sum == target){
                     found = true;
                     break;
-                } 
+                } else if(sum < target){
+                    j++;
+                } else {
+                    k--;
+                }
             }
-
             if(found){
                 break;
             }
@@ -33,7 +37,7 @@ int main(){
         if (found){
             cout << "YES" << endl;
         } else {
-            cout << "NO" << endl;
+            cout << "NO" <<  endl;
         }
     }
 }
