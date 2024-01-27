@@ -3,21 +3,51 @@
 #include<algorithm>
 using namespace std;
 
-int main(){
-    int n;
-    cin >> n;
-    // vector<int> v(n);
-    int a[n];
-    for (int i = 0 ; i < n ; i++){
-        cin >> a[i];
+int n;
+vector<int> v;
+int cou = 0;
+
+void merge(vector<int> &arr,int st,int m , int ed){
+    vector<int> l,r;
+    for (int i=st ; i <= m ; i++){
+        l.push_back(arr[i]);
     }
-    int sum = 0;
-    for (int i = 0 ; i < n ; i++){
-        for (int j = i+1 ; j < n ; j++){
-            if (a[i] > a[j]){
-                sum++;
-            }
+    for (int i = m+1 ; i <= ed ; i++){
+        r.push_back(arr[i]);
+    }
+    int li = 0,ri = 0;
+    int idx = st;
+    while(li < l.size() && ri < r.size() ){
+        if (l[li] <= r[ri]){
+            arr[idx++] = l[li++];
+        } else {
+            cou += l.size() - li;
+            arr[idx++] = r[ri++];
         }
     }
-    cout << sum << endl;
+    while(li < l.size()){
+        arr[idx++] = l[li++];
+    }
+    while(ri < r.size()){
+        arr[idx++] = r[ri++];
+    }
+
+}
+
+void merge_sort(vector<int> &arr, int st, int ed){
+    if (st >= ed) return;
+    int m = (st+ed-1)/2;
+    merge_sort(arr,st,m);
+    merge_sort(arr,m+1,ed);
+    merge(arr,st,m,ed);
+}
+
+int main(){
+    cin >> n;
+    v.resize(n);
+    for(int i=0;i<n;i++){
+        cin >> v[i];
+    }
+    merge_sort(v,0,n-1);
+    cout << cou << "\n";
 }
