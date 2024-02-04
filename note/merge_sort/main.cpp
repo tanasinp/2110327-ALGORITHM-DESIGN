@@ -34,6 +34,7 @@ void merge(vector<int> &arr,int st,int m , int ed){
 }
 
 void merge_sort(vector<int> &arr, int st, int ed){
+    cout << "merge sort " << st << ", " << ed << "\n";
     if (st >= ed) return;
     int m = (st+ed-1)/2;
     merge_sort(arr,st,m);
