@@ -52,10 +52,10 @@ int main(){
         }
     }
 
-    cout << "front : " << front << "\n";
-    cout << "back : " << back << "\n";
-    cout << "max_sum1 : " << max_sum1 << "\n";
-    cout << "max_sum2 : " << max_sum2 << "\n";
-    cout << "plus : " << max_sum1 + max_sum2 << "\n";
-    // cout << max_sum1 + max_sum2 << "\n";
+    // cout << "front : " << front << "\n";
+    // cout << "back : " << back << "\n";
+    // cout << "max_sum1 : " << max_sum1 << "\n";
+    // cout << "max_sum2 : " << max_sum2 << "\n";
+    // cout << "plus : " << max_sum1 + max_sum2 << "\n";
+    cout << max_sum1 + max_sum2 << "\n";
 }
