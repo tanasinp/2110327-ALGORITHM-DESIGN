@@ -3,16 +3,19 @@
 #include <algorithm>
 using namespace std;
 int r = 100000007;
+int dp[10101][2][2];
 int main(){
     int n; cin >> n;
-    int dp[2][n];
-    dp[0][0] = 1;
-    dp[1][0] = 1;
-    dp[0][1] = 2;
-    dp[1][1] = 2;
-    for(int i=2;i<n;i++){
-        dp[0][i] = (dp[0][i-1] + dp[1][i-1]) % r;
-        dp[1][i] = (dp[0][i] - dp[1][i-2]) % r;
+    // int dp[n][2][2];
+    dp[2][0][0] = 1;
+    dp[2][0][1] = 1;
+    dp[2][1][0] = 1;
+    dp[2][1][1] = 1;
+    for(int i=3;i<=n;i++){
+        dp[i][0][0] = (dp[i-1][0][0]+dp[i-1][1][0])%r;
+        dp[i][0][1] = dp[i-1][0][0]%r;
+        dp[i][1][0] = (dp[i-1][0][1]+dp[i-1][1][1])%r;
+        dp[i][1][1] = (dp[i-1][0][1]+dp[i-1][1][1])%r;
     }
-    cout << (dp[0][n-1] + dp[1][n-1])%r << "\n";
+    cout << (dp[n][0][0]+dp[n][0][1]+dp[n][1][0]+dp[n][1][1]) % r << "\n";
 }
