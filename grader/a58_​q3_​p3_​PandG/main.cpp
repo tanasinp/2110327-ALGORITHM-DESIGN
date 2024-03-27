@@ -30,7 +30,7 @@ int main(){
             cin >> ti >> ri >> ci;
             q.push({{ri,ci},{{ti,1},1}}); // {r,c},{ti,T}
         }
-        q.push({{r,c},{{0,1},0}});
+        q.push({{r,c},{{-1,1},0}});
         for(int i=0;i<R;i++){
             string s; cin >> s;
             for(int j=0;j<C;j++){
@@ -44,18 +44,13 @@ int main(){
             int cd = q.front().second.first.second;
             int type = q.front().second.second;
             q.pop();
-            // if(type == 1){
-            //     if(g[cr][cc] < 2 && cti == 0){
-            //         g[cr][cc] = 2;
-            //     }
-            // } 
             for(int i=0;i<4;i++){
                 int nr = cr+mx[i];
                 int nc = cc+my[i];
                 if(0 <= nr && nr < R && 0 <= nc && nc < C && cd <= T){
-                    if(cti > 0){
-                        if(type == 1 && cti-1 == 0){
-                            g[nr][nc] = 2;
+                    if(cti >= 0){
+                        if(type == 1 && cti == 0){
+                            g[cr][cc] = 2;
                             q.push({{nr,nc},{{cti-1,cd+1},type}});
                         } else {
                             q.push({{nr,nc},{{cti-1,cd+1},type}});
@@ -63,7 +58,7 @@ int main(){
                     } else {
                         if(type == 1){ //ghost
                             if(g[nr][nc] < 2) g[nr][nc] = 2;
-                            q.push({{nr,nc},{{cti-1,cd+1},0}});
+                            q.push({{nr,nc},{{cti-1,cd+1},1}});
                         } else if(type == 0 && g[cr][cc] == 1){ //pacman
                             if(g[nr][nc] == 0) g[nr][nc] = 1;
                             q.push({{nr,nc},{{cti-1,cd+1},0}});
