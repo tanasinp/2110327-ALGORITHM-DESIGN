@@ -19,20 +19,23 @@ int main(){
     for(int i=0;i<n;i++) dist[i] = 10000000;
     for(int i=0;i<m;i++){
         int a,b,w; cin >> a >> b >> w;
-        edges.push_back({w,{a,b}});
+        edges.push_back({w,{b,a}});
     }
     for(int i=0;i<k;i++){
-        dist[st[i]] = 0;
+        dist[v] = 0;
     }
     for(int i=1;i<n;i++){
         for(int k=0;k<m;k++){
             int w = edges[k].first;
-            int a = edges[k].second.first;
-            int b = edges[k].second.second;
-            if(dist[b] > dist[a]+w){
-                dist[b] = dist[a]+w;
+            int b = edges[k].second.first;
+            int a = edges[k].second.second;
+            if(dist[a] > dist[b]+w){
+                dist[a] = dist[b]+w;
             }
         }
     }
-    cout << dist[v] << "\n";
+    for(int i=0;i<k;i++){
+        ans = min(ans,dist[st[i]]);
+    }
+    cout << ans << "\n";
 }
