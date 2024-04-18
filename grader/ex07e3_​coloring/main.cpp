@@ -3,46 +3,41 @@
 #include<algorithm>
 #include<queue>
 using namespace std;
-vector<int> edge[55];
+bool edge[55][55];
 int n,e;
+int ans = 1000;
+bool check(int x,vector<int> &colored){
+    for(int i=0;i<n;i++){
+        if(edge[i][x] && colored[i] == colored[x]) return false;
+    }
+    return true;
+}
+void recur(int idx,vector<int> &colored){
+    if(idx == n){
+        int tmp = 0;
+        for(int i=0;i<n;i++){
+            tmp = max(tmp,colored[i]);
+        }
+        ans = min(ans,tmp);
+        return;
+    }
+    for(int i=1;i<=n;i++){
+        if(i>ans) return;
+        colored[idx] = i;
+        if(check(idx,colored)){
+            recur(idx+1,colored);
+        }
+    }
+}
 int main(){
     cin >> n >> e;
     for(int i=0;i<e;i++){
         int a,b; cin >> a >> b;
-            edge[a].push_back(b);
-            edge[b].push_back(a);
+            edge[a][b] = true;
+            edge[b][a] = true;
     }
-    vector<int> colored(n);
-
-    queue<int> q;
-    q.push(0);
-    while(!q.empty()){
-        int cn = q.front();
-        q.pop();
-
-        vector<bool> usedColor(n+1,true);
-        for(int i=0;i<edge[cn].size();i++){
-            int nn = edge[cn][i];
-            if(colored[nn] != 0){
-                usedColor[colored[nn]] = false;
-            }
-        }
-        for(int i=1;i<=n;i++){
-            if(usedColor[i]){
-                colored[cn] = i;
-                break;
-            }
-        }
-        for(int i=0;i<edge[cn].size();i++){
-            int nn = edge[cn][i];
-            if(!colored[nn]){
-                q.push(nn);
-            }
-        }
-    }
-    int ans = 1;
-    for(int i=0;i<n;i++){
-        ans = max(ans,colored[i]);
-    }
+    vector<int> colored(n,0);
+    colored[0] = 1;
+    recur(0,colored);
     cout << ans << "\n";
 }
