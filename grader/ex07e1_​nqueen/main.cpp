@@ -4,23 +4,34 @@
 #include<queue>
 using namespace std;
 int n;
-int col[16],row[16];
+int col[15],row[15];
 int ans = 0;
-bool check(){
-
+bool check(int c,int r){
+    for(int i=0;i<c;i++){   
+        int cx = c - i;
+        int ry = abs(r - col[i]);
+        if(cx == ry) return false;
+    }
+    return true;
 }
 
-void queen(int step){
-    if(step == n+1){
+void recur(int c){
+    if(c == n){
         ans++;
         return;
     }
-    for(int i=1;i<=n;i++){
-        
+    for(int r=0;r<n;r++){
+        if(row[r] != 0) continue;
+        col[c] = r;
+        row[r] = 1;
+        if(check(c,r)) recur(c+1);
+        col[c] = 0;
+        row[r] = 0;
     }
 }
 
 int main(){
     cin >> n;
-    queen(1);
+    recur(0);
+    cout << ans << "\n";
 }
