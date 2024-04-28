@@ -4,67 +4,58 @@
 #include<queue>
 using namespace std;
 int n,m;
-int q[7];
-int ans[7];
-// int idx = 0;
-int edge[21][21];
-void recur(int node,int num,int sum,vector<bool> &used,int overload,int question,int idx){
-    if(sum == question){
-        ans[idx] = 1;
-        return ;
-    }
+int edges[22][22];
+int question[8];
+vector<int> mx;
+bool recur(int node,int sum,int num,vector<bool> &used,int overload,int q){
+    if(sum + overload < q) return false;
+    if(sum > q) return false;
+    if(sum == q) return true;
     if(num == n){
-        if(sum == question){
-            ans[idx] = 1;
-            return ;
-        }
+        if(sum == q) return true;
+        return false;
     }
-    if(ans[idx] == 1) return;
-    if(sum > question) return;
-    if(sum + overload < question) return;
     for(int i=0;i<n;i++){
-        if(edge[node][i] != -1 && used[i] == false){
+        if(!used[i]){
             used[i] = true;
-            recur(i,num+1,sum + edge[node][i],used,overload - edge[node][i],question,idx);
+            if (recur(i,sum + edges[node][i],num+1,used,overload-mx[i],q)) return true;
             used[i] = false;
         }
     }
+    return false;
 }
 int main(){
     cin >> n >> m;
-    for(int i=0;i<8;i++) cin >> q[i];
+    for(int i=0;i<8;i++) cin >> question[i];
 
-    // vector<vector<int>> v(n,vector<int>(n,-1));
     int overload = 0;
-    for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            edge[i][j] = -1;
-        }
-    }
+    mx.resize(n,-10001);
     for(int i=0;i<m;i++){
-        int a,b,c; cin >> a >> b >> c;
-        edge[a][b] = c;
-        edge[b][a] = c;
-        overload += c;
+        int a,b,v; cin >> a >> b >> v;
+        edges[a][b] = v;
+        edges[b][a] = v;
+        mx[a] = max(mx[a],v);
+        mx[b] = max(mx[b],v);
     }
-    
+    for(int i=0;i<n;i++){
+        overload += mx[i];
+    }
+
     for(int i=0;i<8;i++){
-        int tmp = q[i];
         vector<bool> used(n,false);
-        for(int st=0;st<n;st++){
-            if(ans[i] == 0){
-                used[st] = true;
-                recur(st,1,0,used,overload,tmp,i);
-                used[st] = false;
-            }else {
+        bool check = false;
+        for(int j=0;j<n;j++){
+            used[j] = true;
+            if(recur(j,0,1,used,overload-mx[j],question[i])){
+                check = true;
                 break;
             }
+            used[j] = false;
         }
-        if(ans[i] == 0){
-            cout << "NO\n";
-        }else {
+        if(check){
             cout << "YES\n";
+        }else {
+            cout << "NO\n";
         }
     }
-
 }
